@@ -1,7 +1,7 @@
 const PATH = '/usuarios';
 const PATH_BY_ID = PATH + '/:id';
 
-var controller = require('../controllers/usuario')();
+var controller = require('../controllers/userController')();
 
 module.exports = function (app) {
 

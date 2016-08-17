@@ -1,4 +1,4 @@
-var service = require('../services/usuario');
+var service = require('../services/userService');
 var EntityAlreadyExistError = require('../models/errors/EntityAlreadyExistError');
 
 module.exports = function () {
@@ -7,16 +7,16 @@ module.exports = function () {
     controller.query = function (req, res) {
         var query = req.query;
 
-        service.query(query)
-            .then(function (usuarios) {
-                res.json(usuarios);
+        service.exists(query)
+            .then(function (exist) {
+                res.json(exist);
             })
-            .catch(function () {
-
+            .catch(function (err) {
+                console.log(err);
             });
     };
 
-    controller.create = function (req, res) {
+    controller.create = function (req, res, next) {
         var user = req.body;
 
         if (user.id) {
@@ -28,12 +28,20 @@ module.exports = function () {
                 res.json(newUser);
             })
             .catch(function (error) {
-                throw error;
+                next(error);
             });
     };
 
     controller.update = function (req, res) {
         var id = req.params.id;
+
+        service.create(user)
+            .then(function (updatedUser) {
+                res.end(200);
+            })
+            .catch(function (error) {
+                throw error;
+            });
     };
 
     controller.delete = function (req, res) {
