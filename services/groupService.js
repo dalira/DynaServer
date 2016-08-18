@@ -1,24 +1,20 @@
 var Q = require('q');
-var userDAO = require('../daos/userDao');
+var groupDAO = require('../daos/groupDao');
 var EntityAlreadyExistError = require('../models/errors/EntityAlreadyExistError');
 
 module.exports = function (app) {
     var service = {};
 
     service.exists = function (query) {
-        return userDAO.exists(query);
+        return groupDAO.exists(query);
     };
 
     service.query = function (query) {
         var deferred = Q.defer();
 
-        setTimeout(function () {
-            //Verificar se não existe
-
-            //Salvar
-
-            deferred.fulfill([{id: 1}]);
-        }, 2000);
+        var promise = groupDAO.query(query);
+        promise.then(deferred.resolve);
+        promise.catch(deferred.reject);
 
         return deferred.promise;
     };
@@ -26,11 +22,9 @@ module.exports = function (app) {
     service.create = function (user) {
         var deferred = Q.defer();
 
-        var promise = userDAO.create(user);
+        var promise = groupDAO.create(user);
         promise.then(deferred.resolve);
-        promise.catch(function (err) {
-            deferred.reject(err);
-        });
+        promise.catch(deferred.reject);
 
         return deferred.promise;
     };
@@ -38,9 +32,9 @@ module.exports = function (app) {
     service.update = function (user) {
         var deferred = Q.defer();
 
-        var promise = userDAO.update(user);
+        var promise = groupDAO.update(user);
         promise.then(deferred.resolve);
-        promise.then(deferred.reject);
+        promise.catch(deferred.reject);
 
         return deferred.promise;
     };

@@ -14,18 +14,18 @@ module.exports = function () {
             type: String,
             required: true
         },
-        nome : {
+        name : {
             type: String,
             required: true
         },
         admin  : {
             type: Boolean
         },
-        grupo : {
+        grup : {
             type: mongoose.Schema.ObjectId,
-            ref: 'Grupo'
+            ref: 'Group'
         },
-        ativo : {
+        active : {
             type: Boolean
         }
     });

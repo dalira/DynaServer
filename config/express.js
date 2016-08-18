@@ -1,6 +1,5 @@
 var express = require('express');
-var EntityNotValidError = require('../models/errors/EntityNotValidError');
-var EntityAlreadyExistError = require('../models/errors/EntityAlreadyExistError');
+var erroHandler = require('../config/errorHandler');
 
 module.exports = function () {
     var app = express();
@@ -11,16 +10,9 @@ module.exports = function () {
     app.use(require('body-parser').json());
 
     require('../routes/userRoute')(app);
+    require('../routes/groupRoute')(app);
 
-    app.use(function(err, req, res, next) {
-        if (err instanceof EntityNotValidError) {
-            res.send(400);
-        }else if (err instanceof EntityAlreadyExistError) {
-            res.send(409);
-        }else{
-            res.send(500);
-        }
-    });
+    app.use(erroHandler);
 
     return app;
 };

@@ -6,8 +6,7 @@
 function EntityAlreadyExistError(message) {
     this.name = 'EntityAlreadyExistError';
     this.message = message;
-    this.stack = (new Error()).stack;
 }
-EntityAlreadyExistError.prototype = new Error;
+EntityAlreadyExistError.prototype = Error.prototype;
 
 module.exports = EntityAlreadyExistError;

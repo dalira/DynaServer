@@ -46,7 +46,7 @@ module.exports = function (app) {
     service.update = function(user) {
         var deferred = Q.defer();
 
-
+        User.findOneAndUpdate()
 
         return deferred.promise;
     };

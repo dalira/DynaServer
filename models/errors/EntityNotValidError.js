@@ -6,8 +6,7 @@
 function EntityNotValidError(message) {
     this.name = 'EntityNotValidError';
     this.message = message;
-    this.stack = (new Error()).stack;
 }
-EntityNotValidError.prototype = new Error;
+EntityNotValidError.prototype = Error.prototype;
 
 module.exports = EntityNotValidError;

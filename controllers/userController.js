@@ -20,7 +20,7 @@ module.exports = function () {
         var user = req.body;
 
         if (user.id) {
-            throw new EntityAlreadyExistError();
+            next(new EntityAlreadyExistError());
         }
 
         service.create(user)
