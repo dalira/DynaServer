@@ -41,7 +41,7 @@ module.exports = function () {
     service.update = function(group) {
         var deferred = Q.defer();
 
-        var promise = Group.findOneAndUpdate({_id : group._id}, group).then();
+        var promise = Group.findOneAndUpdate({_id : group._id}, group, {new : true}).then();
         promise.then(function(newGroup){
             deferred.resolve(newGroup);
         });

@@ -11,6 +11,4 @@ module.exports = function (app) {
 
     app.put(PATH_BY_ID, groupController.update);
 
-    app.delete(PATH_BY_ID, groupController.delete);
-
 };

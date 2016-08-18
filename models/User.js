@@ -6,6 +6,8 @@ module.exports = function () {
         login : {
             type : String,
             required: true,
+            minlength: 5,
+            maxlength: 20,
             index : {
                 unique : true
             }
