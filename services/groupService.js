@@ -1,6 +1,5 @@
 var Q = require('q');
 var groupDAO = require('../daos/groupDao');
-var EntityAlreadyExistError = require('../models/errors/EntityAlreadyExistError');
 
 module.exports = function (app) {
     var service = {};

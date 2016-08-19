@@ -46,8 +46,9 @@ module.exports = function () {
         }
 
         groupService.update(group)
-            .then(function () {
-                res.send(group);
+            .then(function (newGroup) {
+                newGroup.save(); //Salvar para incrementar
+                res.send(newGroup);
             })
             .catch(function (error) {
                 next(error);
