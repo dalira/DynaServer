@@ -39,7 +39,7 @@ module.exports = function () {
 
         if (group._id) {
             if (id != group._id) {
-                next(new BadRequestError("ID do PATH é diferetente do ID da entidade"));
+                next(new BadRequestError("ID do PATH é diferente do ID da entidade"));
             }
         }else{
             group._id = id;

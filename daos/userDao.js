@@ -9,44 +9,54 @@ module.exports = function (app) {
     service.exists = function (query) {
         var deferred = Q.defer();
 
-        var promise = User.findOne(query);
-        promise.then(function (user) {
-            deferred.resolve((!user));
-        });
-        promise.catch(promise.reject);
+        promise = User.findOne(query)
+            .then(function (user) {
+                deferred.resolve((!user));
+            })
+            .catch(promise.reject);
 
         return deferred.promise;
     };
 
-    service.query = function (query) {
+    service.query = function (query, page, limit) {
         var deferred = Q.defer();
 
+        page = page | 0;
+        limit = limit | 20;
+
+        User.find(query).skip(page * limit).limit(limit).populate('group')
+            .then(deferred.resolve)
+            .catch(deferred.reject);
 
         return deferred.promise;
     };
 
-    service.create = function(user) {
+    service.create = function (user) {
         var deferred = Q.defer();
 
-        var promise = User.create(user).then();
-        promise.then(function(newUser){
-            deferred.resolve(newUser);
-        });
-        promise.catch(function(err){
-            if (err.name === 'ValidationError') {
-                deferred.reject(new EntityNotValidError());
-            }else{
-                deferred.reject(err);
-            }
-        });
+        var promise = User.create(user)
+            .then(function (newUser) {
+                User.populate(newUser, {path: 'group'})
+                    .then(deferred.resolve)
+                    .catch(deferred.reject);
+            })
+            .catch(function (err) {
+                if (err.name === 'ValidationError') {
+                    deferred.reject(new EntityNotValidError());
+                } else {
+                    deferred.reject(err);
+                }
+            });
 
         return deferred.promise;
     };
 
-    service.update = function(user) {
+    service.update = function (user) {
         var deferred = Q.defer();
 
-        User.findOneAndUpdate()
+        User.findOneAndUpdate({_id: user._id}, user)
+            .then(deferred.resolve)
+            .catch(deferred.reject);
 
         return deferred.promise;
     };

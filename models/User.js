@@ -21,7 +21,7 @@ module.exports = function () {
         admin  : {
             type: Boolean
         },
-        grup : {
+        group : {
             type: mongoose.Schema.ObjectId,
             ref: 'Group'
         },

@@ -4,15 +4,15 @@ var EntityAlreadyExistError = require('../models/errors/EntityAlreadyExistError'
 module.exports = function () {
     var controller = {};
 
-    controller.query = function (req, res) {
+    controller.query = function (req, res, next) {
         var query = req.query;
 
-        service.exists(query)
+        service.query(query)
             .then(function (exist) {
                 res.json(exist);
             })
             .catch(function (err) {
-                console.log(err);
+                next(error);
             });
     };
 
@@ -32,15 +32,24 @@ module.exports = function () {
             });
     };
 
-    controller.update = function (req, res) {
+    controller.update = function (req, res, next) {
         var id = req.params.id;
+        var user = req.body;
 
-        service.create(user)
+        if (user._id) {
+            if (id != user._id) {
+                next(new BadRequestError("ID do PATH é diferente do ID da entidade"));
+            }
+        }else{
+            user._id = id;
+        }
+
+        service.update(user)
             .then(function (updatedUser) {
-                res.end(200);
+                res.json(updatedUser);
             })
             .catch(function (error) {
-                throw error;
+                next(error);
             });
     };
 

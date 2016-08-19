@@ -12,13 +12,9 @@ module.exports = function (app) {
     service.query = function (query) {
         var deferred = Q.defer();
 
-        setTimeout(function () {
-            //Verificar se não existe
-
-            //Salvar
-
-            deferred.fulfill([{id: 1}]);
-        }, 2000);
+        var promise = userDAO.query(query);
+        promise.then(deferred.resolve);
+        promise.catch(deferred.reject);
 
         return deferred.promise;
     };
@@ -28,9 +24,7 @@ module.exports = function (app) {
 
         var promise = userDAO.create(user);
         promise.then(deferred.resolve);
-        promise.catch(function (err) {
-            deferred.reject(err);
-        });
+        promise.catch(deferred.reject);
 
         return deferred.promise;
     };
