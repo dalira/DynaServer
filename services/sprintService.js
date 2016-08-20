@@ -1,40 +1,37 @@
 var Q = require('q');
-var userDAO = require('../daos/userDao');
+var sprintDao = require('../daos/sprintDao');
 
 var service = {};
-
-service.exists = function (query) {
-    return userDAO.exists(query);
-};
 
 service.query = function (query) {
     var deferred = Q.defer();
 
-    var promise = userDAO.query(query);
+    var promise = sprintDao.query(query);
     promise.then(deferred.resolve);
     promise.catch(deferred.reject);
 
     return deferred.promise;
 };
 
-service.create = function (user) {
+service.create = function (sprint) {
     var deferred = Q.defer();
 
-    var promise = userDAO.create(user);
+    var promise = sprintDao.create(sprint);
     promise.then(deferred.resolve);
     promise.catch(deferred.reject);
 
     return deferred.promise;
 };
 
-service.update = function (user) {
+service.update = function (sprint) {
     var deferred = Q.defer();
 
-    var promise = userDAO.update(user);
+    var promise = sprintDao.update(sprint);
     promise.then(deferred.resolve);
     promise.then(deferred.reject);
 
     return deferred.promise;
 };
+
 
 module.exports = service;

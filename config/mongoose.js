@@ -14,6 +14,7 @@ module.exports = function (uri) {
 
     mongoose.connection.on('error', function (erro) {
         console.log(`Erro na conexão com Mongoose: ${erro}`);
+        process.exit(0);
     });
 
     //Finalizar a conexão com o mongoose na finalização do sistema

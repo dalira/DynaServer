@@ -1,33 +1,31 @@
 var Q = require('q');
 
-var User = require('../models/User');
+var Sprint = require('../models/Sprint');
 var EntityNotValidError = require('../models/errors/EntityNotValidError');
 
 var service = {};
 
-service.query = function (query) {
+service.query = function (query, page, limit) {
     var deferred = Q.defer();
 
-    User.find(query)
+    page = page | 0;
+    limit = limit | 20;
+
+    Sprint.find(query).skip(page * limit).limit(limit).populate('group')
         .then(deferred.resolve)
         .catch(deferred.reject);
 
     return deferred.promise;
 };
 
-service.create = function (user) {
+service.create = function (sprint) {
     var deferred = Q.defer();
 
-    var promise = User.create(user)
+    Sprint.create(sprint)
         .then(deferred.resolve)
         .catch(function (err) {
             if (err.name === 'ValidationError') {
-                deerred.reject(new EntityNotValidError());
-            } else if (err.name === 'MongoError') {
-                if (err.code === 11000) {
-                    //Erro de valor unico duplicado
-                    deferred.reject(new EntityNotValidError());
-                }
+                deferred.reject(new EntityNotValidError());
             } else {
                 deferred.reject(err);
             }
@@ -36,14 +34,15 @@ service.create = function (user) {
     return deferred.promise;
 };
 
-service.update = function (user) {
+service.update = function (sprint) {
     var deferred = Q.defer();
 
-    User.findOneAndUpdate({_id: user._id}, user)
+    Sprint.findOneAndUpdate({_id: sprint._id}, sprint)
         .then(deferred.resolve)
         .catch(deferred.reject);
 
     return deferred.promise;
 };
+
 
 module.exports = service;

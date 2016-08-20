@@ -1,15 +1,32 @@
-var groupService = require('../services/groupService');
+var transactionService = require('../services/transactionService');
 var EntityAlreadyExistError = require('../models/errors/EntityAlreadyExistError');
-var BadRequestError = require('../models/errors/BadRequestError');
 
 var controller = {};
+
+controller.getById = function (req, res, next) {
+    var id = req.params.id;
+    var query = {_id: id};
+
+    transactionService.query(query)
+        .then(function (users) {
+            var user = users[0];
+            if (user) {
+                res.json(user);
+            } else {
+                res.sendStatus(404);
+            }
+        })
+        .catch(function (err) {
+            next(err);
+        });
+};
 
 controller.query = function (req, res, next) {
     var query = req.query;
 
-    groupService.query(query)
-        .then(function (groups) {
-            res.json(groups);
+    transactionService.query(query)
+        .then(function (users) {
+            res.json(users);
         })
         .catch(function (err) {
             next(err);
@@ -17,13 +34,13 @@ controller.query = function (req, res, next) {
 };
 
 controller.create = function (req, res, next) {
-    var group = req.body;
+    var transaction = req.body;
 
-    if (group.id) {
+    if (transaction.id) {
         next(new EntityAlreadyExistError());
     }
 
-    groupService.create(group)
+    transactionService.create(transaction)
         .then(function () {
             res.sendStatus(201);
         })
@@ -34,17 +51,17 @@ controller.create = function (req, res, next) {
 
 controller.update = function (req, res, next) {
     var id = req.params.id;
-    var group = req.body;
+    var transaction = req.body;
 
-    if (group._id) {
-        if (id != group._id) {
+    if (transaction._id) {
+        if (id != transaction._id) {
             next(new BadRequestError("ID do PATH é diferente do ID da entidade"));
         }
     } else {
-        group._id = id;
+        transaction._id = id;
     }
 
-    groupService.update(group)
+    transactionService.update(transaction)
         .then(function () {
             res.sendStatus(204);
         })

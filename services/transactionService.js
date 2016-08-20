@@ -1,36 +1,32 @@
 var Q = require('q');
-var userDAO = require('../daos/userDao');
+var transactionDao = require('../daos/transactionDao');
 
 var service = {};
-
-service.exists = function (query) {
-    return userDAO.exists(query);
-};
 
 service.query = function (query) {
     var deferred = Q.defer();
 
-    var promise = userDAO.query(query);
+    var promise = transactionDao.query(query);
     promise.then(deferred.resolve);
     promise.catch(deferred.reject);
 
     return deferred.promise;
 };
 
-service.create = function (user) {
+service.create = function (transaction) {
     var deferred = Q.defer();
 
-    var promise = userDAO.create(user);
+    var promise = transactionDao.create(transaction);
     promise.then(deferred.resolve);
     promise.catch(deferred.reject);
 
     return deferred.promise;
 };
 
-service.update = function (user) {
+service.update = function (transaction) {
     var deferred = Q.defer();
 
-    var promise = userDAO.update(user);
+    var promise = transactionDao.update(transaction);
     promise.then(deferred.resolve);
     promise.then(deferred.reject);
 

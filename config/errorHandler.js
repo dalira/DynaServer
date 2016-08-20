@@ -3,6 +3,7 @@ var EntityAlreadyExistError = require('../models/errors/EntityAlreadyExistError'
 var BadRequestError = require('../models/errors/BadRequestError');
 
 function errorHandlre (err, req, res, next) {
+    console.log(err);
     if (err instanceof EntityNotValidError) {
         res.sendStatus(400);
     } else if (err instanceof EntityAlreadyExistError) {
@@ -10,7 +11,6 @@ function errorHandlre (err, req, res, next) {
     } else if (err instanceof BadRequestError) {
         res.sendStatus(400);
     } else {
-        console.log(err);
         res.sendStatus(500);
     }
 }

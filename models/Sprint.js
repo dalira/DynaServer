@@ -8,9 +8,18 @@ var schema = mongoose.Schema({
             unique: true
         }
     },
-    active: {
-        type: Boolean,
-        default: true
+    begin: {
+        type: Date,
+        required: true
+    },
+    end: {
+        type: Date,
+        required: true
+    },
+    group: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Configuration',
+        required: true
     }
 });
 
@@ -23,5 +32,4 @@ schema.pre('update', function (next) {
     this.update({}, {$inc: {__v: 1}}, next);
 });
 
-module.exports = mongoose.model('Group', schema);
-
+module.exports = mongoose.model('Configuration', schema);
