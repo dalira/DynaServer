@@ -1,7 +1,7 @@
 var Q = require('q');
 
 var Sprint = require('../models/Sprint');
-var EntityNotValidError = require('../models/errors/EntityNotValidError');
+var EntityNotValidError = require('../errors/EntityNotValidError');
 
 var service = {};
 

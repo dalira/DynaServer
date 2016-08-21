@@ -3,8 +3,40 @@ var userDAO = require('../daos/userDao');
 
 var service = {};
 
-service.exists = function (query) {
-    return userDAO.exists(query);
+service.verifyPassword = function (login, password) {
+    var deferred = Q.defer();
+
+    service.query({login : login})
+        .then(function (users) {
+
+            var user = users[0];
+            if (user) {
+                user.verifyPassword(password, function (err, valid) {
+                    if (err) {
+                        deferred.reject(err);
+                    }else{
+                        deferred.resolve(valid);
+                    }
+                });
+            }else{
+                deferred.resolve(false);
+            }
+        })
+        .catch(deferred.reject);
+
+    return deferred.promise;
+};
+
+service.findByLogin = function (login) {
+    var deferred = Q.defer();
+
+    service.query()
+        .then(function (users) {
+            deferred.resolve(users[0]);
+        })
+        .catch(deferred.reject);
+
+    return deferred.promise;
 };
 
 service.query = function (query) {

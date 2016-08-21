@@ -1,5 +1,5 @@
 var userService = require('../services/userService');
-var EntityAlreadyExistError = require('../models/errors/EntityAlreadyExistError');
+var EntityAlreadyExistError = require('../errors/EntityAlreadyExistError');
 
 var controller = {};
 

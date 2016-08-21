@@ -32,4 +32,4 @@ schema.pre('update', function (next) {
     this.update({}, {$inc: {__v: 1}}, next);
 });
 
-module.exports = mongoose.model('Configuration', schema);
+module.exports = mongoose.model('Sprint', schema);

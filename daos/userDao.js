@@ -1,9 +1,19 @@
 var Q = require('q');
 
 var User = require('../models/User');
-var EntityNotValidError = require('../models/errors/EntityNotValidError');
+var EntityNotValidError = require('../errors/EntityNotValidError');
 
 var service = {};
+
+service.findById = function (id) {
+    var deferred = Q.defer();
+
+    User.findById(id)
+        .then(deferred.resolve)
+        .catch(deferred.reject);
+
+    return deferred.promise;
+};
 
 service.query = function (query) {
     var deferred = Q.defer();
@@ -22,7 +32,7 @@ service.create = function (user) {
         .then(deferred.resolve)
         .catch(function (err) {
             if (err.name === 'ValidationError') {
-                deerred.reject(new EntityNotValidError());
+                deferred.reject(new EntityNotValidError());
             } else if (err.name === 'MongoError') {
                 if (err.code === 11000) {
                     //Erro de valor unico duplicado

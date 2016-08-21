@@ -9,8 +9,14 @@ module.exports = function () {
     app.use(express.static('/public'));
     app.use(require('body-parser').json());
 
+    require('../config/passport')(app);
+
+    require('../routes/authRoute')(app);
     require('../routes/userRoute')(app);
     require('../routes/groupRoute')(app);
+    require('../routes/configurationRoute')(app);
+    require('../routes/sprintRoute')(app);
+    require('../routes/transactionRoute')(app);
 
     app.use(erroHandler);
 

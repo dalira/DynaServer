@@ -1,10 +1,10 @@
-const PATH = '';
-
-var authController = require('../controllers/authController');
+var passport = require('passport');
 
 module.exports = function (app) {
 
-    app.use('/*', authController.checkToken);
+    var authController = require('../controllers/authController')(app);
+
     app.post('/auth', authController.auth);
+    app.use('/*', passport.authenticate('jwt', { session: false}));
 
 };

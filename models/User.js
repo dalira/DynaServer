@@ -11,11 +11,6 @@ var schema = mongoose.Schema({
             unique: true
         }
     },
-    password: {
-        type: String,
-        bcrypt: true,
-        select: false
-    },
     email: {
         type: String,
         required: true
@@ -35,10 +30,6 @@ var schema = mongoose.Schema({
     active: {
         type: Boolean
     }
-});
-
-schema.pre(validate, function (next) {
-
 });
 
 schema.plugin(mongooseBcrypt);

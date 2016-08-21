@@ -1,6 +1,6 @@
 var groupService = require('../services/groupService');
-var EntityAlreadyExistError = require('../models/errors/EntityAlreadyExistError');
-var BadRequestError = require('../models/errors/BadRequestError');
+var EntityAlreadyExistError = require('../errors/EntityAlreadyExistError');
+var BadRequestError = require('../errors/BadRequestError');
 
 var controller = {};
 

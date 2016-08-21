@@ -1,5 +1,5 @@
 var sprintService = require('../services/sprintService');
-var EntityAlreadyExistError = require('../models/errors/EntityAlreadyExistError');
+var EntityAlreadyExistError = require('../errors/EntityAlreadyExistError');
 
 var controller = {};
 

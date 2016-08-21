@@ -1,16 +1,27 @@
-var authService = require('../services/authService');
+var UnauthorizedUserError = require('../errors/UnauthorizedUserError');
 
-var controller = {};
+module.exports = function (app) {
 
-controller.auth = function (req, res, next) {
-    var login = req.body.login;
-    var password = req.body.password;
+    var authService = require('../services/authService')(app);
 
+    var controller = {};
+
+    controller.auth = function (req, res, next) {
+        var login = req.body.login;
+        var password = req.body.password;
+
+        authService.createAuthToken(login, password)
+            .then(function (token) {
+                res.writeHead(200, {'Authorization': `JWT ${token}`});
+                res.end();
+            })
+            .catch(function (err) {
+                console.log(err);
+                next(new UnauthorizedUserError());
+            });
+
+    };
+
+    return controller;
 
 };
-
-controller.checkToken = function (req, res, next) {
-
-};
-
-module.exports = controller;

@@ -1,16 +1,39 @@
 var Q = require('q');
-var userDAO = require('../daos/userDao');
+var jsonwebtoken = require('jsonwebtoken');
 
-var service = {};
+var userService = require('../services/userService');
 
-service.auth = function (login, password) {
-    var deferred = Q.defer();
+var UnauthorizedUserError = require('../errors/UnauthorizedUserError');
 
-    var promise = userDAO.query(query);
-    promise.then(deferred.resolve);
-    promise.catch(deferred.reject);
+module.exports = function (app) {
 
-    return deferred.promise;
+    var service = {};
+
+    service.createAuthToken = function (login, password) {
+        var deferred = Q.defer();
+
+        userService.verifyPassword(login, password)
+            .then(function (valid) {
+                if (valid) {
+                    jsonwebtoken.sign({login: login}, app.get('secret'), {expiresIn: '24h'}, function (err, token) {
+                        if (err) {
+                            deferred.reject(err);
+                        } else {
+                            deferred.resolve(token);
+                        }
+                    });
+                } else {
+                    deferred.reject(new UnauthorizedUserError());
+                }
+            })
+            .catch(deferred.reject);
+
+        return deferred.promise;
+    };
+
+    return service;
+
 };
 
-module.exports = service;
+
+

@@ -1,5 +1,5 @@
 var transactionService = require('../services/transactionService');
-var EntityAlreadyExistError = require('../models/errors/EntityAlreadyExistError');
+var EntityAlreadyExistError = require('../errors/EntityAlreadyExistError');
 
 var controller = {};
 
