@@ -21,7 +21,6 @@ module.exports = function (app) {
                     done(null, user);
                 } else {
                     done(null, false);
-                    // or you could create a new account
                 }
             })
             .catch(function (err) {

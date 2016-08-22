@@ -1,4 +1,4 @@
-const PATH = '/transacao';
+const PATH = '/transacoes';
 const PATH_BY_ID = PATH + '/:id';
 
 var transactionController = require('../controllers/transactionController');

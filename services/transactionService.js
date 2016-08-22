@@ -1,14 +1,14 @@
 var Q = require('q');
-//var transactionDao = require('../daos/transactionDao'); TODO:
+var transactionDao = require('../daos/transactionDao');
 
 var service = {};
 
 service.query = function (query) {
     var deferred = Q.defer();
 
-    var promise = transactionDao.query(query);
-    promise.then(deferred.resolve);
-    promise.catch(deferred.reject);
+    transactionDao.query(query)
+        .then(deferred.resolve)
+        .catch(deferred.reject);
 
     return deferred.promise;
 };
@@ -16,9 +16,9 @@ service.query = function (query) {
 service.create = function (transaction) {
     var deferred = Q.defer();
 
-    var promise = transactionDao.create(transaction);
-    promise.then(deferred.resolve);
-    promise.catch(deferred.reject);
+    transactionDao.create(transaction)
+        .then(deferred.resolve)
+        .catch(deferred.reject);
 
     return deferred.promise;
 };
@@ -26,9 +26,9 @@ service.create = function (transaction) {
 service.update = function (transaction) {
     var deferred = Q.defer();
 
-    var promise = transactionDao.update(transaction);
-    promise.then(deferred.resolve);
-    promise.then(deferred.reject);
+    transactionDao.update(transaction)
+        .then(deferred.resolve)
+        .then(deferred.reject);
 
     return deferred.promise;
 };

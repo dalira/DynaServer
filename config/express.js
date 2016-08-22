@@ -9,6 +9,11 @@ module.exports = function () {
     app.use(express.static('/public'));
     app.use(require('body-parser').json());
 
+    app.use(function (req, res, next) {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        next();
+    });
+
     require('../config/passport')(app);
 
     require('../routes/authRoute')(app);

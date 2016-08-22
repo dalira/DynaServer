@@ -7,7 +7,7 @@ var service = {};
 service.get = function () {
     var deferred = Q.defer();
 
-    Configuration.findOne()
+    Configuration.findOne({}, "-_id -__v")
         .then(deferred.resolve)
         .catch(deferred.reject);
 
@@ -17,9 +17,13 @@ service.get = function () {
 service.update = function (configuration) {
     var deferred = Q.defer();
 
-    Configuration.update({}, configuration)
-        .then(deferred.resolve)
-        .catch(deferred.reject);
+    Configuration.create(configuration)
+        .then(function(conf){
+            deferred.resolve();
+        })
+        .catch(function(err) {
+            deferred.reject(err);
+        });
 
     return deferred.promise;
 };
