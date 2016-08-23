@@ -3,9 +3,9 @@ var EntityAlreadyExistError = require('../errors/EntityAlreadyExistError');
 
 var controller = {};
 
-controller.getById = function (req, res, next) {
-    var id = req.params.id;
-    var query = {_id: id};
+controller.getByLogin = function (req, res, next) {
+    var login = req.params.login;
+    var query = {login: login};
 
     userService.query(query)
         .then(function (users) {
@@ -50,15 +50,15 @@ controller.create = function (req, res, next) {
 };
 
 controller.update = function (req, res, next) {
-    var id = req.params.id;
+    var login = req.params.login;
     var user = req.body;
 
-    if (user._id) {
-        if (id != user._id) {
-            next(new BadRequestError("ID do PATH é diferente do ID da entidade"));
+    if (user.login) {
+        if (login != user.login) {
+            next(new BadRequestError("Login do PATH é diferente do login da entidade"));
         }
     } else {
-        user._id = id;
+        user.login = login;
     }
 
     userService.update(user)

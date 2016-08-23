@@ -18,8 +18,10 @@ service.update = function (configuration) {
     var deferred = Q.defer();
 
     Configuration.create(configuration)
-        .then(function(conf){
-            deferred.resolve();
+        .then(function(newConf){
+            var obj = newConf.toObject();
+            delete obj['_id'];
+            deferred.resolve(obj);
         })
         .catch(function(err) {
             deferred.reject(err);

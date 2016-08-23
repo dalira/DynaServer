@@ -10,7 +10,9 @@ module.exports = function () {
     app.use(require('body-parser').json());
 
     app.use(function (req, res, next) {
-        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE');
+        res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
         next();
     });
 

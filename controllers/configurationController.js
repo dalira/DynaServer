@@ -17,8 +17,8 @@ controller.update = function (req, res, next) {
     var configuration = req.body;
 
     configurationService.update(configuration)
-        .then(function () {
-            res.sendStatus(204);
+        .then(function (newConfiguration) {
+            res.json(newConfiguration);
         })
         .catch(function (error) {
             next(error);

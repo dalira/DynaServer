@@ -1,5 +1,5 @@
 const PATH = '/usuarios';
-const PATH_BY_ID = PATH + '/:id';
+const PATH_BY_LOGIN = PATH + '/:login';
 
 var userController = require('../controllers/userController');
 
@@ -9,8 +9,8 @@ module.exports = function (app) {
         .get(userController.query)
         .post(userController.create);
 
-    app.route(PATH_BY_ID)
-        .get(userController.getById)
+    app.route(PATH_BY_LOGIN)
+        .get(userController.getByLogin)
         .put(userController.update);
 
 };
