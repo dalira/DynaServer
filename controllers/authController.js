@@ -14,8 +14,7 @@ module.exports = function (app) {
             .then(function (token) {
                 res.writeHead(200, {'Authorization': `JWT ${token}`});
                 res.end();
-            })
-            .catch(function (err) {
+            }, function (err) {
                 console.log(err);
                 next(new UnauthorizedUserError());
             });

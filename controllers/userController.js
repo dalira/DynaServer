@@ -11,7 +11,9 @@ controller.getByLogin = function (req, res, next) {
         .then(function (users) {
             var user = users[0];
             if (user) {
-                res.json(user);
+                var obj = user.toObject();
+                delete obj['password'];
+                res.json(obj);
             } else {
                 res.sendStatus(404);
             }

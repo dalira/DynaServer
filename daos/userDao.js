@@ -8,7 +8,8 @@ var service = {};
 service.findById = function (id) {
     var deferred = Q.defer();
 
-    User.findById(id)
+    User.findById(id, "-password")
+        .populate("group")
         .then(deferred.resolve)
         .catch(deferred.reject);
 
@@ -19,6 +20,7 @@ service.query = function (query) {
     var deferred = Q.defer();
 
     User.find(query)
+        .populate("group")
         .then(deferred.resolve)
         .catch(deferred.reject);
 

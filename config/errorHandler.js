@@ -5,13 +5,13 @@ var UnauthorizedUserError = require('../errors/UnauthorizedUserError');
 
 function errorHandlre (err, req, res, next) {
     console.log(err);
-    if (err instanceof UnauthorizedUserError) {
+    if (err.name === UnauthorizedUserError.name) {
         res.sendStatus(401);
-    } else if (err instanceof EntityNotValidError) {
+    } else if (err.name === EntityNotValidError.name) {
         res.sendStatus(400);
-    } else if (err instanceof EntityAlreadyExistError) {
+    } else if (err.name === EntityAlreadyExistError.name) {
         res.sendStatus(409);
-    } else if (err instanceof BadRequestError) {
+    } else if (err.name === BadRequestError.name) {
         res.sendStatus(400);
     } else {
         res.sendStatus(500);
