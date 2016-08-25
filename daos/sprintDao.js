@@ -20,7 +20,7 @@ service.count = function (query) {
 service.query = function (query, page, limit) {
     var deferred = Q.defer();
 
-    page = Number(page || 0);
+    page = Number(page || 0) - 1;
     limit = Number(limit || 20);
 
     Sprint.find(query).populate('group').skip(page * limit).limit(limit)

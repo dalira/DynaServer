@@ -32,6 +32,51 @@ service.query = function (query, page, limit) {
 service.create = function (sprint) {
     var deferred = Q.defer();
 
+    setEndOfSprint(sprint)
+        .then(function (adjustedSprint) {
+            sprintDao.create(adjustedSprint)
+                .then(deferred.resolve)
+                .catch(deferred.reject);
+        })
+        .catch(deferred.reject);
+
+    return deferred.promise;
+};
+
+service.update = function (sprint) {
+    var deferred = Q.defer();
+
+    setEndOfSprint(sprint)
+        .then(function (adjustedSprint) {
+            sprintDao.update(adjustedSprint)
+                .then(deferred.resolve)
+                .then(deferred.reject);
+        })
+        .catch(deferred.reject);
+
+    return deferred.promise;
+};
+
+
+module.exports = service;
+
+
+var setEndOfSprint = function (sprint, configuration) {
+    var defered = Q.defer();
+
+
+
+    return defered.promise;
+};
+
+var getSprintPeriod = function (sprint) {
+
+    var isNew = !sprint_id;
+
+    if (isNew) {
+
+    }
+
     ConfigurationService.get()
         .then(function (configuration) {
 
@@ -41,27 +86,10 @@ service.create = function (sprint) {
             } else {
                 //TODO:
             }
+            sprint
 
-            sprintDao.create(sprint)
-                .then(deferred.resolve)
-                .catch(deferred.reject);
-
+            defered.resolve(sprint);
         })
         .catch(deferred.reject);
 
-
-    return deferred.promise;
-};
-
-service.update = function (sprint) {
-    var deferred = Q.defer();
-
-    var promise = sprintDao.update(sprint);
-    promise.then(deferred.resolve);
-    promise.then(deferred.reject);
-
-    return deferred.promise;
-};
-
-
-module.exports = service;
+}

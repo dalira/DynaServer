@@ -56,19 +56,19 @@ controller.create = function (req, res, next) {
 
 controller.update = function (req, res, next) {
     var id = req.params.id;
-    var user = req.body;
+    var sprint = req.body;
 
-    if (user._id) {
-        if (id != user._id) {
+    if (sprint._id) {
+        if (id != sprint._id) {
             next(new BadRequestError("ID do PATH é diferente do ID da entidade"));
         }
     } else {
-        user._id = id;
+        sprint._id = id;
     }
 
-    sprintService.update(user)
+    sprintService.update(sprint)
         .then(function () {
-            res.sendStatus(204);
+            res.json(sprint);
         })
         .catch(function (error) {
             next(error);
