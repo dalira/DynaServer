@@ -5,13 +5,25 @@ var EntityNotValidError = require('../errors/EntityNotValidError');
 
 var service = {};
 
+service.count = function (query) {
+    var deferred = Q.defer();
+
+    Sprint.count(query)
+        .then(function (count) {
+            deferred.resolve(count);
+        })
+        .catch(deferred.reject);
+
+    return deferred.promise;
+};
+
 service.query = function (query, page, limit) {
     var deferred = Q.defer();
 
-    page = page | 0;
-    limit = limit | 20;
+    page = Number(page || 0);
+    limit = Number(limit || 20);
 
-    Sprint.find(query).skip(page * limit).limit(limit).populate('group')
+    Sprint.find(query).populate('group').skip(page * limit).limit(limit)
         .then(deferred.resolve)
         .catch(deferred.reject);
 

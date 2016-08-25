@@ -8,12 +8,23 @@ const ONE_WEEK = ONE_DAY * 7;
 
 var service = {};
 
-service.query = function (query) {
+service.query = function (query, page, limit) {
     var deferred = Q.defer();
 
-    var promise = sprintDao.query(query);
-    promise.then(deferred.resolve);
-    promise.catch(deferred.reject);
+    sprintDao.query(query, page, limit)
+        .then(function (sprints) {
+
+            sprintDao.count(query)
+                .then(function (totalQueryItems) {
+                    deferred.resolve({
+                        items: sprints,
+                        totalItems: totalQueryItems,
+                        currentPage: page
+                    });
+                })
+                .catch(deferred.reject);
+        })
+        .catch(deferred.reject);
 
     return deferred.promise;
 };
@@ -27,7 +38,7 @@ service.create = function (sprint) {
             var duration = configuration.duration;
             if (duration === 'SEMANAL') {
                 sprint.end = new Date(new Date(sprint.begin).getTime() + ONE_WEEK);
-            }else{
+            } else {
                 //TODO:
             }
 

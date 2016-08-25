@@ -24,9 +24,14 @@ controller.getById = function (req, res, next) {
 controller.query = function (req, res, next) {
     var query = req.query;
 
-    sprintService.query(query)
-        .then(function (users) {
-            res.json(users);
+    var page = query._page;
+    var limit = query._limit;
+    delete query['_page'];
+    delete query['_limit'];
+
+    sprintService.query(query, page, limit)
+        .then(function (sprints) {
+            res.json(sprints);
         })
         .catch(function (err) {
             next(err);

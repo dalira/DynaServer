@@ -18,7 +18,7 @@ var schema = mongoose.Schema({
     },
     group: {
         type: mongoose.Schema.ObjectId,
-        ref: 'Configuration',
+        ref: 'Group',
         required: true
     }
 });
