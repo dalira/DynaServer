@@ -25,7 +25,7 @@ module.exports = function (app) {
         if (req.user) {
             res.json(req.user);
         }else{
-            res.status(404);
+            res.sendStatus(404);
         }
     };
 
