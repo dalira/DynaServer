@@ -4,11 +4,6 @@ var schema = mongoose.Schema({
     initialValue: {
         type: Number,
         required: true,
-    },
-    duration: {
-        type: String,
-        required: true,
-        enum : ['MENSAL', 'SEMANAL']
     }
 });
 

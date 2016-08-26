@@ -11,18 +11,18 @@ var service = {};
 service.query = function (query, page, limit) {
     var deferred = Q.defer();
 
+    var items;
     sprintDao.query(query, page, limit)
         .then(function (sprints) {
-
-            sprintDao.count(query)
-                .then(function (totalQueryItems) {
-                    deferred.resolve({
-                        items: sprints,
-                        totalItems: totalQueryItems,
-                        currentPage: page
-                    });
-                })
-                .catch(deferred.reject);
+            items = sprints;
+            return sprintDao.count(query);
+        })
+        .then(function (totalQueryItems) {
+            deferred.resolve({
+                items: items,
+                totalItems: totalQueryItems,
+                currentPage: page
+            });
         })
         .catch(deferred.reject);
 
@@ -32,12 +32,8 @@ service.query = function (query, page, limit) {
 service.create = function (sprint) {
     var deferred = Q.defer();
 
-    setEndOfSprint(sprint)
-        .then(function (adjustedSprint) {
-            sprintDao.create(adjustedSprint)
-                .then(deferred.resolve)
-                .catch(deferred.reject);
-        })
+    sprintDao.create(sprint)
+        .then(deferred.resolve)
         .catch(deferred.reject);
 
     return deferred.promise;
@@ -46,50 +42,12 @@ service.create = function (sprint) {
 service.update = function (sprint) {
     var deferred = Q.defer();
 
-    setEndOfSprint(sprint)
-        .then(function (adjustedSprint) {
-            sprintDao.update(adjustedSprint)
-                .then(deferred.resolve)
-                .then(deferred.reject);
-        })
-        .catch(deferred.reject);
+    sprintDao.update(sprint)
+        .then(deferred.resolve)
+        .then(deferred.reject);
 
     return deferred.promise;
 };
 
 
 module.exports = service;
-
-
-var setEndOfSprint = function (sprint, configuration) {
-    var defered = Q.defer();
-
-
-
-    return defered.promise;
-};
-
-var getSprintPeriod = function (sprint) {
-
-    var isNew = !sprint_id;
-
-    if (isNew) {
-
-    }
-
-    ConfigurationService.get()
-        .then(function (configuration) {
-
-            var duration = configuration.duration;
-            if (duration === 'SEMANAL') {
-                sprint.end = new Date(new Date(sprint.begin).getTime() + ONE_WEEK);
-            } else {
-                //TODO:
-            }
-            sprint
-
-            defered.resolve(sprint);
-        })
-        .catch(deferred.reject);
-
-}
