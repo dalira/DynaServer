@@ -21,6 +21,14 @@ module.exports = function (app) {
 
     };
 
+    controller.getAuthUser = function (req, res, next) {
+        if (req.user) {
+            res.json(req.user);
+        }else{
+            res.status(404);
+        }
+    };
+
     return controller;
 
 };

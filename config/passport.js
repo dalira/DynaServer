@@ -17,6 +17,10 @@ module.exports = function (app) {
     passport.use(new JwtStrategy(opts, function (jwt_payload, done) {
         userService.findByLogin(jwt_payload.login)
             .then(function (user) {
+
+                user = user.toObject();
+                delete user['password'];
+
                 if (user) {
                     done(null, user);
                 } else {
