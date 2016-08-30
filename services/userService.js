@@ -3,10 +3,20 @@ var userDAO = require('../daos/userDao');
 
 var service = {};
 
+service.count = function (query, page, limit) {
+    var deferred = Q.defer();
+
+    userDAO.count(query)
+        .then(deferred.resolve)
+        .catch(deferred.reject);
+
+    return deferred.promise;
+};
+
 service.verifyPassword = function (login, password) {
     var deferred = Q.defer();
 
-    service.query({login : login})
+    service.query({login: login})
         .then(function (users) {
 
             var user = users[0];
@@ -14,11 +24,11 @@ service.verifyPassword = function (login, password) {
                 user.verifyPassword(password, function (err, valid) {
                     if (err) {
                         deferred.reject(err);
-                    }else{
+                    } else {
                         deferred.resolve(valid);
                     }
                 });
-            }else{
+            } else {
                 deferred.resolve(false);
             }
         })
@@ -30,7 +40,7 @@ service.verifyPassword = function (login, password) {
 service.findByLogin = function (login) {
     var deferred = Q.defer();
 
-    service.query()
+    service.query({login: login})
         .then(function (users) {
             deferred.resolve(users[0]);
         })
@@ -39,12 +49,12 @@ service.findByLogin = function (login) {
     return deferred.promise;
 };
 
-service.query = function (query) {
+service.query = function (query, page, limit) {
     var deferred = Q.defer();
 
-    var promise = userDAO.query(query);
-    promise.then(deferred.resolve);
-    promise.catch(deferred.reject);
+    userDAO.query(query, page, limit)
+        .then(deferred.resolve)
+        .catch(deferred.reject);
 
     return deferred.promise;
 };

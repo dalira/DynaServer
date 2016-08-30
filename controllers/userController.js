@@ -26,13 +26,25 @@ controller.getByLogin = function (req, res, next) {
 controller.query = function (req, res, next) {
     var query = req.query;
 
-    userService.query(query)
-        .then(function (users) {
-            res.json(users);
+    var page = query._page;
+    var limit = query._limit;
+    delete query['_page'];
+    delete query['_limit'];
+
+    var items;
+    userService.query(query, page, limit)
+        .then(function (sprints) {
+            items = sprints;
+            return userService.count(query);
         })
-        .catch(function (err) {
-            next(err);
-        });
+        .then(function (totalQueryItems) {
+            res.json({
+                items: items,
+                totalItems: totalQueryItems,
+                currentPage: page
+            });
+        })
+        .catch(next);
 };
 
 controller.create = function (req, res, next) {

@@ -5,6 +5,7 @@ var UnauthorizedUserError = require('../errors/UnauthorizedUserError');
 
 function errorHandlre (err, req, res, next) {
     console.log(err);
+    console.log(err.stack);
     if (err.name === UnauthorizedUserError.name) {
         res.sendStatus(401);
     } else if (err.name === EntityNotValidError.name) {

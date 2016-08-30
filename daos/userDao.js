@@ -5,6 +5,18 @@ var EntityNotValidError = require('../errors/EntityNotValidError');
 
 var service = {};
 
+service.count = function (query) {
+    var deferred = Q.defer();
+
+    User.count(query)
+        .then(function (count) {
+            deferred.resolve(count);
+        })
+        .catch(deferred.reject);
+
+    return deferred.promise;
+};
+
 service.findById = function (id) {
     var deferred = Q.defer();
 
@@ -16,10 +28,13 @@ service.findById = function (id) {
     return deferred.promise;
 };
 
-service.query = function (query) {
+service.query = function (query, page, limit) {
     var deferred = Q.defer();
 
-    User.find(query)
+    page = Number(page - 1 || 0);
+    limit = Number(limit || 20);
+
+    User.find(query).skip(page * limit).limit(limit)
         .populate("group")
         .then(deferred.resolve)
         .catch(deferred.reject);
