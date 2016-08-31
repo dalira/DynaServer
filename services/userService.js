@@ -3,6 +3,8 @@ var userDAO = require('../daos/userDao');
 
 var service = {};
 
+const DEFAULT_PASSWORD = 123;
+
 service.count = function (query, page, limit) {
     var deferred = Q.defer();
 
@@ -61,6 +63,10 @@ service.query = function (query, page, limit) {
 
 service.create = function (user) {
     var deferred = Q.defer();
+
+    if (!(user.password)) {
+        user.password = DEFAULT_PASSWORD;
+    }
 
     var promise = userDAO.create(user);
     promise.then(deferred.resolve);
