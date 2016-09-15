@@ -56,5 +56,24 @@ service.update = function (sprint) {
     return deferred.promise;
 };
 
+service.getCurrentSprintByUser = function (user) {
+    var deferred = Q.defer();
+
+    var today = new Date();
+
+    Sprint.findOne({
+        group:  user.group,
+        begin: {
+            $lte: today
+        },
+        end: {
+            $gte: today
+        }
+    })
+        .then(deferred.resolve)
+        .catch(deferred.reject);
+
+    return deferred.promise;
+};
 
 module.exports = service;

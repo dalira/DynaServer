@@ -20,10 +20,6 @@ var schema = mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'Group',
         required: true
-    },
-    duration: {
-        type: String,
-        enum : ['MENSAL', 'SEMANAL']
     }
 });
 

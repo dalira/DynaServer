@@ -40,6 +40,8 @@ controller.create = function (req, res, next) {
         next(new EntityAlreadyExistError());
     }
 
+    transaction.from = req.user;
+
     transactionService.create(transaction)
         .then(function () {
             res.sendStatus(201);

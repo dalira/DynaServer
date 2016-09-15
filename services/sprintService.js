@@ -3,9 +3,6 @@ var Q = require('q');
 var sprintDao = require('../daos/sprintDao');
 var ConfigurationService = require('../services/configurationService');
 
-const ONE_DAY = 24 * 60 * 60 * 1000;
-const ONE_WEEK = ONE_DAY * 7;
-
 var service = {};
 
 service.query = function (query, page, limit) {
@@ -49,5 +46,14 @@ service.update = function (sprint) {
     return deferred.promise;
 };
 
+service.getCurrentSprintByUser = function (user){
+    var deferred = Q.defer();
+
+    sprintDao.getCurrentSprintByUser(user)
+        .then(deferred.resolve)
+        .then(deferred.reject);
+
+    return deferred.promise;
+}
 
 module.exports = service;

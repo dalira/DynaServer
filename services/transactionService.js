@@ -1,6 +1,8 @@
 var Q = require('q');
 var transactionDao = require('../daos/transactionDao');
 
+var sprintService = require('../services/sprintService');
+
 var service = {};
 
 service.query = function (query) {
@@ -16,7 +18,13 @@ service.query = function (query) {
 service.create = function (transaction) {
     var deferred = Q.defer();
 
-    transactionDao.create(transaction)
+    sprintService.getCurrentSprintByUser(transaction.from)
+        .then(function (sprint) {
+            transaction.sprint = sprint;
+            transaction.date = new Date();
+
+            return transactionDao.create(transaction);
+        })
         .then(deferred.resolve)
         .catch(deferred.reject);
 
