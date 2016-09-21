@@ -5,11 +5,22 @@ var sprintService = require('../services/sprintService');
 
 var service = {};
 
-service.query = function (query) {
+service.query = function (query, page, limit) {
     var deferred = Q.defer();
 
-    transactionDao.query(query)
-        .then(deferred.resolve)
+    var items;
+    transactionDao.query(query, page, limit)
+        .then(function (sprints) {
+            items = sprints;
+            return transactionDao.count(query);
+        })
+        .then(function (totalQueryItems) {
+            deferred.resolve({
+                items: items,
+                totalItems: totalQueryItems,
+                currentPage: page
+            });
+        })
         .catch(deferred.reject);
 
     return deferred.promise;

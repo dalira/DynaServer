@@ -8,10 +8,10 @@ controller.getById = function (req, res, next) {
     var query = {_id: id};
 
     transactionService.query(query)
-        .then(function (users) {
-            var user = users[0];
-            if (user) {
-                res.json(user);
+        .then(function (transactions) {
+            var transaction = transactions[0];
+            if (transaction) {
+                res.json(transaction);
             } else {
                 res.sendStatus(404);
             }
@@ -24,9 +24,14 @@ controller.getById = function (req, res, next) {
 controller.query = function (req, res, next) {
     var query = req.query;
 
-    transactionService.query(query)
-        .then(function (users) {
-            res.json(users);
+    var page = query._page;
+    var limit = query._limit;
+    delete query['_page'];
+    delete query['_limit'];
+
+    transactionService.query(query, page, limit)
+        .then(function (transactions) {
+            res.json(transactions);
         })
         .catch(function (err) {
             next(err);
